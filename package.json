@@ -21,10 +21,13 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-async-handler": "^1.1.4",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.13.17",
+    "faker": "^5.5.3",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^5.13.22",
     "morgan": "^1.10.0",
     "multer": "^1.4.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "validator": "^13.9.0"
   },
   "devDependencies": {
