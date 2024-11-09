@@ -3,8 +3,8 @@ import mongoose from 'mongoose'
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(
-      // "mongodb://localhost:27017/ebs", {
-      "mongodb+srv://shresthadinesh71555:2KD8BRcc7ByqN80I@pahichan.nvaueck.mongodb.net/pahichan?retryWrites=true&w=majority&appName=pahichan", {
+      "mongodb://localhost:27017/ebs", {
+      // "mongodb+srv://shresthadinesh71555:2KD8BRcc7ByqN80I@pahichan.nvaueck.mongodb.net/pahichan?retryWrites=true&w=majority&appName=pahichan", {
       useUnifiedTopology: true,
       useNewUrlParser: true,
       useCreateIndex: true,

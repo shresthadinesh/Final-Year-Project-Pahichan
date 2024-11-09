@@ -9,6 +9,7 @@ import Paginate from '../components/Paginate'
 import ProductCarousel from '../components/ProductCarousel'
 import Meta from '../components/Meta'
 import { listProducts } from '../actions/productActions'
+import HeroSection from '../components/HeroSection'
 
 const HomeScreen = ({ match }) => {
   const keyword = match.params.keyword
@@ -27,13 +28,7 @@ const HomeScreen = ({ match }) => {
   return (
     <>
       <Meta />
-      {!keyword ? (
-        <ProductCarousel />
-      ) : (
-        <Link to='/' className='btn btn-light'>
-          Go Back
-        </Link>
-      )}
+      <HeroSection/>
       <h1>All Products</h1>
       {loading ? (
         <Loader />
@@ -54,6 +49,14 @@ const HomeScreen = ({ match }) => {
             keyword={keyword ? keyword : ''}
           />
         </>
+      )}
+        <h1>Recommended Products</h1>
+       {!keyword ? (
+        <ProductCarousel />
+      ) : (
+        <Link to='/' className='btn btn-light'>
+          Go Back
+        </Link>
       )}
     </>
   )
