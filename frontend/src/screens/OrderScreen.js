@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import Product from '../components/Product';
+import KhaltiPayment from '../components/KhaltiPayment'
 
 
 
@@ -227,20 +228,23 @@ const OrderScreen = ({ match, history }) => {
               <ListGroup.Item>
                 <Row>
                   <Col>Total</Col>
-                  <Col>${order.totalPrice}</Col>
+                  <Col>RS{order.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
               {!order.isPaid && !userInfo.isAdmin && (
                 <ListGroup.Item>
-                  {loadingPay && <Loader />}
+                  {/* {loadingPay && <Loader />}
                   {!sdkReady ? (
                     <Loader />
                   ) : (
+                    <>
                     <PayPalButton
                       amount={order.totalPrice}
                       onSuccess={successPaymentHandler}
                     />
-                  )}
+                    </>
+                  )} */}
+                  <KhaltiPayment data={order}/>
                 </ListGroup.Item>
               )}
               {loadingDeliver && <Loader />}

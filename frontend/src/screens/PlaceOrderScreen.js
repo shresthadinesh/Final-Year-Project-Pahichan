@@ -12,6 +12,7 @@ const PlaceOrderScreen = ({ history }) => {
   const dispatch = useDispatch();
 
   const cart = useSelector((state) => state.cart);
+  const paymentMethod = useSelector((state)=>state.cart.paymentMethod)
 
   if (!cart.shippingAddress.address) {
     history.push('/shipping');
@@ -85,8 +86,9 @@ const PlaceOrderScreen = ({ history }) => {
             </ListGroup.Item>
 
             <ListGroup.Item>
+
               <h2>Payment Method</h2>
-              <strong>Method: PayPal</strong>
+              <strong>Method: {paymentMethod}</strong>
               {/* {cart.paymentMethod} */}
             </ListGroup.Item>
 

@@ -18,14 +18,17 @@ import UserEditScreen from './screens/UserEditScreen'
 import ProductListScreen from './screens/ProductListScreen'
 import ProductEditScreen from './screens/ProductEditScreen'
 import OrderListScreen from './screens/OrderListScreen'
+import Success from './screens/Success'
+import MainHome from './screens/MainHome'
 
 const App = () => {
   return (
     <div>
       <Header />
-        <main className='pb-2 min-h-screen'>
+        <main className='py-20 min-h-screen'>
           <Container>
             <Route path='/order/:id' component={OrderScreen} />
+            <Route path='/success/' component={Success} />
             <Route path='/shipping' component={ShippingScreen} />
             <Route path='/payment' component={PaymentScreen} />
             <Route path='/placeorder' component={PlaceOrderScreen} />
@@ -55,7 +58,7 @@ const App = () => {
               component={HomeScreen}
               exact
               />
-            <Route path='/' component={HomeScreen} exact />
+            <Route path='/' component={MainHome} exact />
           </Container>
         </main>
       <Footer />

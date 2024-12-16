@@ -11,7 +11,7 @@ import Meta from '../components/Meta'
 import { listProducts } from '../actions/productActions'
 import HeroSection from '../components/HeroSection'
 
-const HomeScreen = ({ match }) => {
+const MainHome = ({ match }) => {
   const keyword = match.params.keyword
 
   const pageNumber = match.params.pageNumber || 1
@@ -28,6 +28,7 @@ const HomeScreen = ({ match }) => {
   return (
     <>
       <Meta />
+      <HeroSection/>
       <h1>All Products</h1>
       {loading ? (
         <Loader />
@@ -61,4 +62,4 @@ const HomeScreen = ({ match }) => {
   )
 }
 
-export default HomeScreen
+export default MainHome

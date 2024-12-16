@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { FaBeer } from 'react-icons/fa';
 const Footer = () => {
   return (
     <footer className="bg-gray-400">
@@ -72,7 +72,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-        <div className="px-56 py-6 bg-gray-100 md:flex md:items-center md:justify-between">
+        <div className="px-56 py-6 bg-gray-800 md:flex md:items-center md:justify-between">
           <span className="text-sm text-gray-500 sm:text-center">© 2023 <a href="https://pahichan.com/">Pahichan™</a>. All Rights Reserved.</span>
           <div className="flex mt-4 sm:justify-center md:mt-0 space-x-5 rtl:space-x-reverse">
             <a href="#facebook" className="text-gray-400 hover:text-gray-900">

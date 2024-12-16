@@ -2,7 +2,7 @@ import React from 'react';
 import backgroundImage from '../public/background.png'
 const HeroSection = () => {
   return (
-    <div className='relative min-h-screen grid justify-center items-center'>
+    <div className='relative -mt-20 min-h-screen grid justify-center items-center'>
         <div style={{
         backgroundImage: `url(${backgroundImage})`
       }}
