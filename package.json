@@ -1,7 +1,7 @@
 {
-  "name": "magicmotorparts",
+  "name": "pahichan",
   "version": "1.0.0",
-  "description": "magicmotorparts",
+  "description": "pahichan",
   "main": "server.js",
   "type": "module",
   "scripts": {

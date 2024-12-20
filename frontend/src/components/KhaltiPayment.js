@@ -1,5 +1,5 @@
 // src/components/KhaltiPayment.js
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import KhaltiCheckout from "khalti-checkout-web";
 import khaltiConfig from "../configs/KhaltiConfig";
 import axios from "axios";
@@ -11,6 +11,10 @@ const KhaltiPayment = ({data, onSuccess}) => {
   // const orderDetails = useSelector((state) => state.orderDetails);
   // const { order, loading, error } = orderDetails;
   // const dispatch = useDispatch();
+  const [priceOverload, setPriceOverload] = useState(false)
+
+  var total = parseInt(data?.taxPrice) + parseInt(data?.itemsPrice)
+  console.log(total)
 
   const handleBuy = async () => {
     console.log(data)
@@ -18,7 +22,7 @@ const KhaltiPayment = ({data, onSuccess}) => {
       orderId:data._id,
       return_url: `http://localhost:3000/success`,
       website_url: "http://localhost:3000",
-      amount:  1300,
+      amount:  total,
       purchase_order_id: data._id,
       purchase_order_name: "test",
       customer_info: {
@@ -27,23 +31,32 @@ const KhaltiPayment = ({data, onSuccess}) => {
         phone: "9811496763",
       },
     };
-
-    const response = await axios.post(`http://localhost:5001/api/orders/khalti-api/`, payload);
-
-    if (response) {
-      console.log(response.data?.data?.pidx)
-      // onSuccess({
-      //   id: "id",
-      //   status: "status",
-      //   update_time: "update_time",
-      //   email_address: "email_address",
-      // })
-      window.location.href = `${response?.data?.data?.payment_url}`;
+    if(total > 100000)
+    {
+      setPriceOverload(true)
     }
-  };
+    else {
+      const response = await axios.post(`http://localhost:5001/api/orders/khalti-api/`, payload);
+      if (response) {
+        console.log(response.data?.data?.pidx)
+        // onSuccess({
+        //   id: "id",
+        //   status: "status",
+        //   update_time: "update_time",
+        //   email_address: "email_address",
+        // })
+        window.location.href = `${response?.data?.data?.payment_url}`;
+      }
+    };
+    }
+
 
   return (
     <div className="flex flex-col items-center mt-10">
+      {
+        priceOverload &&
+        <div className="text-black-500 p-2 mb-2 rounded-md bg-red-100">Test pay.khalti cannot proceed transaction more than Rs. 100000</div>
+      }
       <button
         onClick={handleBuy}
         className="px-6 py-3 bg-purple-700 text-white font-semibold rounded-lg shadow-md hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-opacity-50 w-full"

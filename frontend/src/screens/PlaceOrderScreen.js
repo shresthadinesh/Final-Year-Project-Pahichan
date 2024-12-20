@@ -152,7 +152,7 @@ const PlaceOrderScreen = ({ history }) => {
               <ListGroup.Item>
                 <Row>
                   <Col>Total</Col>
-                  <Col>${((cart.totalPrice)/131.91).toFixed(2)}</Col>
+                  <Col>Rs {cart.totalPrice}</Col>
                 </Row>
                 <Row>
                   <Col>NOTE:</Col>

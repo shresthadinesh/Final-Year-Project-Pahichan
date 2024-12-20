@@ -40,7 +40,7 @@ const orderSchema = mongoose.Schema(
     },
     paymentMethod: {
       type: String,
-      default: "paypal",
+      default: "khalti",
       required: true,
     },
     paymentResult: {

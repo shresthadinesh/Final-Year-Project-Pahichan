@@ -213,9 +213,6 @@ const createProductReview = asyncHandler(async (req, res) => {
 
 
 //algorithm start
-
-
-
 const findSimilarUsers = async (userId) => {
   console.log('Inside findSimilarUsers');
   const userhistry=[];

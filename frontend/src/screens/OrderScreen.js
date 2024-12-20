@@ -156,7 +156,8 @@ const OrderScreen = ({ match, history }) => {
               <h2>Payment Method</h2>
               <p>
                 <strong>Method: </strong>
-                {order.paymentMethod}
+                Khalti
+                {/* {order.paymentMethod} */}
               </p>
               {order.isPaid ? (
                 <Message variant="success">
@@ -210,25 +211,25 @@ const OrderScreen = ({ match, history }) => {
               <ListGroup.Item>
                 <Row>
                   <Col>Items</Col>
-                  <Col>Rs{order.itemsPrice}</Col>
+                  <Col>Rs {order.itemsPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Shipping</Col>
-                  <Col>Rs{order.shippingPrice}</Col>
+                  <Col>Rs {order.shippingPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Tax</Col>
-                  <Col>RS{order.taxPrice}</Col>
+                  <Col>RS {order.taxPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Total</Col>
-                  <Col>RS{order.totalPrice}</Col>
+                  <Col>RS {(parseFloat(order.taxPrice) + parseFloat(order.itemsPrice)).toFixed(2)}</Col>
                 </Row>
               </ListGroup.Item>
               {!order.isPaid && !userInfo.isAdmin && (
@@ -244,7 +245,7 @@ const OrderScreen = ({ match, history }) => {
                     />
                     </>
                   )} */}
-                  <KhaltiPayment data={order}/>
+                  <KhaltiPayment  data={order}/>
                 </ListGroup.Item>
               )}
               {loadingDeliver && <Loader />}

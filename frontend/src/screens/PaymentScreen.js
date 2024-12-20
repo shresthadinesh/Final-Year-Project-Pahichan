@@ -31,7 +31,7 @@ const PaymentScreen = ({ history }) => {
         <Form.Group>
           <Form.Label as='legend'>Select Method</Form.Label>
           <Col>
-            <Form.Check
+            {/* <Form.Check
               type='radio'
               label='paypal'
               id='paypal'
@@ -39,7 +39,7 @@ const PaymentScreen = ({ history }) => {
               value='paypal'
               checked
               onChange={(e) => setPaymentMethod(e.target.value)}
-            ></Form.Check>
+            ></Form.Check> */}
 
             <Form.Check
               type='radio'
@@ -47,13 +47,14 @@ const PaymentScreen = ({ history }) => {
               id='Khalti'
               name='paymentMethod'
               value='khalti'
+              checked
               onChange={(e) => setPaymentMethod(e.target.value)}
             ></Form.Check>
           </Col>
         </Form.Group>
 
         <Button type='submit' variant='primary'>
-          Continue
+          Continue to proceed payment with Khalti
         </Button>
       </Form>
     </FormContainer>
