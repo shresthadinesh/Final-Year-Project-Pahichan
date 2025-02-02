@@ -1,7 +1,7 @@
-import asyncHandler from 'express-async-handler'
-import Product from '../models/productModel.js'
-import Order from "../models/orderModel.js"
-import User from "../models/userModel.js"
+import asyncHandler from "express-async-handler";
+import Product from "../models/productModel.js";
+import Order from "../models/orderModel.js";
+import User from "../models/userModel.js";
 
 // @desc    Fetch all products
 // @route   GET /api/products
@@ -14,7 +14,7 @@ const getProducts = asyncHandler(async (req, res) => {
     ? {
         name: {
           $regex: req.query.keyword,
-          $options: 'i',
+          $options: "i",
         },
       }
     : {};
@@ -25,9 +25,13 @@ const getProducts = asyncHandler(async (req, res) => {
     .skip(pageSize * (page - 1));
 
   // Apply Merge Sort to sort the products array based on name in ascending order
-  const sortedProducts = mergeSort(products, 'name');
+  const sortedProducts = mergeSort(products, "name");
 
-  res.json({ products: sortedProducts, page, pages: Math.ceil(count / pageSize) });
+  res.json({
+    products: sortedProducts,
+    page,
+    pages: Math.ceil(count / pageSize),
+  });
 });
 
 // Merge Sort function
@@ -84,100 +88,93 @@ function merge(leftArr, rightArr, sortBy) {
 // @route   GET /api/products/:id
 // @access  Public
 const getProductById = asyncHandler(async (req, res) => {
-  const product = await Product.findById(req.params.id)
+  const product = await Product.findById(req.params.id);
 
   if (product) {
-    res.json(product)
+    res.json(product);
   } else {
-    res.status(404)
-    throw new Error('Product not found')
+    res.status(404);
+    throw new Error("Product not found");
   }
-})
+});
 
 // @desc    Delete a product
 // @route   DELETE /api/products/:id
 // @access  Private/Admin
 const deleteProduct = asyncHandler(async (req, res) => {
-  const product = await Product.findById(req.params.id)
+  const product = await Product.findById(req.params.id);
 
   if (product) {
-    await product.remove()
-    res.json({ message: 'Product removed' })
+    await product.remove();
+    res.json({ message: "Product removed" });
   } else {
-    res.status(404)
-    throw new Error('Product not found')
+    res.status(404);
+    throw new Error("Product not found");
   }
-})
+});
 
 // @desc    Create a product
 // @route   POST /api/products
 // @access  Private/Admin
 const createProduct = asyncHandler(async (req, res) => {
   const product = new Product({
-    name: 'Sample name',
+    name: "Sample name",
     price: 0,
     user: req.user._id,
-    image: '/images/sample.jpg',
-    brand: 'Sample brand',
-    category: 'Sample category',
+    image: "/images/sample.jpg",
+    brand: "Sample brand",
+    category: "Sample category",
     countInStock: 0,
     numReviews: 0,
-    description: 'Sample description',
-  })
+    description: "Sample description",
+  });
 
-  const createdProduct = await product.save()
-  res.status(201).json(createdProduct)
-})
+  const createdProduct = await product.save();
+  res.status(201).json(createdProduct);
+});
 
 // @desc    Update a product
 // @route   PUT /api/products/:id
 // @access  Private/Admin
 const updateProduct = asyncHandler(async (req, res) => {
-  const {
-    name,
-    price,
-    description,
-    image,
-    brand,
-    category,
-    countInStock,
-  } = req.body
+  const { name, price, description, image, brand, category, countInStock } =
+    req.body;
 
-  const product = await Product.findById(req.params.id)
+  const product = await Product.findById(req.params.id);
 
   if (product) {
-    product.name = name
-    product.price = price
-    product.description = description
-    product.image = image
-    product.brand = brand
-    product.category = category
-    product.countInStock = countInStock
+    product.name = name;
+    product.price = price;
+    product.description = description;
+    product.image = image;
+    product.brand = brand;
+    product.category = category;
+    product.countInStock = countInStock;
 
-    const updatedProduct = await product.save()
-    res.json(updatedProduct)
+    const updatedProduct = await product.save();
+    res.json(updatedProduct);
   } else {
-    res.status(404)
-    throw new Error('Product not found')
+    res.status(404);
+    throw new Error("Product not found");
   }
-})
+});
 
 // @desc    Create new review
 // @route   POST /api/products/:id/reviews
 // @access  Private
 const createProductReview = asyncHandler(async (req, res) => {
-  const { rating, comment } = req.body
+  const { rating, comment } = req.body;
 
-  const product = await Product.findById(req.params.id)
+  const product = await Product.findById(req.params.id);
 
   if (product) {
     const alreadyReviewed = product.reviews.find(
       (r) => r.user.toString() === req.user._id.toString()
-    )
+    );
 
     if (alreadyReviewed) {
-      res.status(400)
-      throw new Error('Product already reviewed')
+      res.status(400);
+      throw new Error("Product already reviewed");
     }
 
     const review = {
@@ -185,104 +182,110 @@ const createProductReview = asyncHandler(async (req, res) => {
       rating: Number(rating),
       comment,
       user: req.user._id,
-    }
+    };
 
-    product.reviews.push(review)
+    product.reviews.push(review);
 
-    product.numReviews = product.reviews.length
+    product.numReviews = product.reviews.length;
 
     product.rating =
       product.reviews.reduce((acc, item) => item.rating + acc, 0) /
-      product.reviews.length
+      product.reviews.length;
 
-    await product.save()
-    res.status(201).json({ message: 'Review added' })
+    await product.save();
+    res.status(201).json({ message: "Review added" });
   } else {
-    res.status(404)
-    throw new Error('Product not found')
+    res.status(404);
+    throw new Error("Product not found");
   }
-})
+});
 
 // @desc    Get top rated products
 // @route   GET /api/products/top
 // @access  Public
 
-
-
-
-
-
 //algorithm start
 const findSimilarUsers = async (userId) => {
-  console.log('Inside findSimilarUsers');
-  const userhistry=[];
+  const userhistry = []; // store user order history
   const userOrders = await Order.find({ user: userId });
   for (const uorder of userOrders) {
     for (const uitem of uorder.orderItems) {
-      userhistry.push(uitem.name)
+      userhistry.push(uitem.name);
     }
   }
-  const otherUsers = await User.find({ _id: { $ne: userId } });
-  console.log('userhistry:', userhistry);
-  console.log('otherUsers:', otherUsers);
+
+  const otherUsers = await User.find({ _id: { $ne: userId } }); // Search for other users ex:[{users}]
 
   const similarUsers = [];
-  const disproduct=[]
-  
+  const disproduct = [];
+  const disproductWithUser = [];
+
   for (const otherUser of otherUsers) {
-    let otherhistry=[];
-    const otherUserOrders = await Order.find({ user: otherUser._id });
+    let otherhistry = [];
+    const otherUserOrders = await Order.find({ user: otherUser._id }); // find products that were order by other users
     for (const otheruser of otherUserOrders) {
-      
       for (const otherItem of otheruser.orderItems) {
-        otherhistry.push(otherItem.name)
+        otherhistry.push(otherItem.name);
       }
     }
-    console.log('otherUserOrders:', otherhistry);
+    // console.log('otherUserOrders:', otherhistry);//[topi,pant] [topi,shirt,pant,skirt]
 
     const similarity = userhistry.filter((order) =>
-    otherhistry.includes(order)).length;
-    console.log("similar item",similarity);
+      otherhistry.includes(order)
+    ).length; // similarity = 2
 
     if (similarity > 1) {
       similarUsers.push({
         userId: otherUser._id,
+        userName: otherUser.name,
         similarity,
-      })
-      
-      const dissimilarity = otherhistry.filter((order) =>
-      !userhistry.includes(order));
-      console.log("dissimilar" ,dissimilarity);
-      disproduct.push(dissimilarity);
-      
+      });
+
+      const dissimilarity = otherhistry.filter(
+        (order) => !userhistry.includes(order)
+      );
+
+      disproduct.push(dissimilarity); //[ 'shirt', 'skirt' ]
+
+      disproductWithUser.push({productName:dissimilarity,userName:otherUser.name,similarity:similarity})
+
     }
   }
-  const finalprod= [];
-  console.log(disproduct);
+  
+  const finalprod = []; // yedi user bich similarity 1 vanda dherai xa vane jun product user le other user ko orderhistory ma kinna bani xa tyo chai recommend garxa
   for (const subArray of disproduct) {
     for (const disproduct of subArray) {
-      finalprod.push(disproduct)
+      finalprod.push(disproduct);
     }
   }
-  console.log(finalprod);
-  
 
-  return finalprod;
+  const finalProdWithName = [];
+  for (const subArray of disproductWithUser) {
+    for (const disproduct of subArray.productName) {
+      finalProdWithName.push({disProduct:disproduct,userName:subArray.userName,similarity:subArray.similarity});
+    }
+  }
+  return finalProdWithName;
 };
 
 //algorithm ends
 
 const getTopProducts = asyncHandler(async (req, res) => {
   try {
-    console.log('Inside getTopProducts');
-    
     // Retrieve user ID from request, set to null if not available
     const userId = req.user ? req.user._id : null;
-    console.log('userId:', userId);
+    // console.log("userId:", userId);
 
     // Find similar users based on the provided user ID
-    const similarUsers = await findSimilarUsers(userId);
-    console.log('similarUsers:', similarUsers);
+    const findSimilarUsersResp  = await findSimilarUsers(userId);
+
+    const similarUsers = findSimilarUsersResp.map(item => item.disProduct);
+
+    const similarityMap = findSimilarUsersResp.reduce((acc, item) => {
+      acc[item.disProduct] = item.similarity;
+      return acc;
+    }, {});
+    // console.log("similarUsers:", similarUsers);
 
     let products;
 
@@ -297,29 +300,73 @@ const getTopProducts = asyncHandler(async (req, res) => {
         {
           $sort: {
             rating: -1, // Sort by rating in descending order
-            price: 1,   // Then sort by price in ascending order
+            price: 1, // Then sort by price in ascending order
           },
         },
         {
           $group: {
-            _id: '$name',         // Group by product name
-            product: { $first: '$$ROOT' }, // Select the first document for each product name
+            _id: "$name", // Group by product name
+            product: { $first: "$$ROOT" }, // Select the first document for each product name
           },
         },
         {
-          $replaceRoot: { newRoot: '$product' }, // Replace the root with the selected documents
+          $replaceRoot: { newRoot: "$product" }, // Replace the root with the selected documents
+        },
+        {
+          $addFields: {
+            similarityValue: {
+              $let: {
+                vars: {
+                  matchedUser: {
+                    $arrayElemAt: [
+                      // Find the corresponding user from similarUsers array
+                      {
+                        $filter: {
+                          input: findSimilarUsersResp,
+                          as: "user",
+                          cond: { $eq: ["$$user.disProduct", "$name"] },
+                        },
+                      },
+                      0, // Get the first matching element
+                    ],
+                  },
+                },
+                in: { $ifNull: ["$$matchedUser.similarity", null] }, // Add similarity if available
+              },
+            },
+            RecommendedUserName: {
+              $let: {
+                vars: {
+                  matchedUser: {
+                    $arrayElemAt: [
+                      {
+                        $filter: {
+                          input: findSimilarUsersResp,
+                          as: "user",
+                          cond: { $eq: ["$$user.disProduct", "$name"] },
+                        },
+                      },
+                      0,
+                    ],
+                  },
+                },
+                in: { $ifNull: ["$$matchedUser.userName", null] }, // Add userName if available
+              },
+            },
+          },
         },
         {
           $limit: 5, // Limit the results to the top 5 products
         },
       ]);
-    } else {
+    }
+     else {
       // If there are no similar users, simply fetch top products based on rating
       products = await Product.aggregate([
         {
           $sort: {
             rating: -1, // Sort by rating in descending order
-            price: 1,   // Then sort by price in ascending order
+            price: 1, // Then sort by price in ascending order
           },
         },
         {
@@ -333,17 +380,10 @@ const getTopProducts = asyncHandler(async (req, res) => {
     // Send the top products as a JSON response
     res.json(products);
   } catch (error) {
-    console.log('Error:', error);
-    res.status(500).json({ error: 'Server Error' }); // Send 500 status and error message in case of error
+    // console.log('Error:', error);
+    res.status(500).json({ error: "Server Error" }); // Send 500 status and error message in case of error
   }
 });
-
-
-
-
-
-
-
 
 export {
   getProducts,
@@ -353,4 +393,4 @@ export {
   updateProduct,
   createProductReview,
   getTopProducts,
-}
+};
